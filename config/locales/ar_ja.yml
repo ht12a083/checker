@@ -1,0 +1,9 @@
+ja:
+  activerecord:
+    models:
+      bookmark: お気に入り
+    attributes:
+      bookmark:
+        name: 配信者名
+        account_id: 配信者ID
+        site: 配信サイト

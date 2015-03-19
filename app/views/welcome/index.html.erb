@@ -1,0 +1,226 @@
+<% fc2Uri = URI.parse('http://live.fc2.com/contents/allchannellist.php') %>
+<% json = Net::HTTP.get(fc2Uri) %>
+<% result = JSON.parse(json) %>
+<% channel = result['channel'] %>
+<% flag = 0 %>
+<% bookmarkFlag = 0 %>
+
+<% if logged_in? %>
+
+<h2>登録した配信者</h2>
+<%= "更新#{@now.strftime("%Y-%m-%d %H:%M:%S")}" %>
+
+<table border="3" width="100%" cellspacing="0" cellpadding="5" bordercolor="#333333" id="booklist">
+	<thead>
+	<tr>
+		<th><center>配信者名</center></th>
+		<th><center>視聴者数</center></th>
+		<th><center>配信サイト</center></th>
+		<th><center>開始時間</center></th>
+		<th><center>トピック</center></th>
+		<th><center>編集</center></th>
+	</tr>
+</thead>
+
+<tbody>
+	<% @bookmark.each do |bookmark| %>
+
+		<% if bookmark.site == "fc2" %>
+			<% channel.each do |channel| %>
+				<% if channel['id'] == bookmark.account_id %>
+					<tr class="online" id="<%= bookmark.account_id %>">
+						<td class="name"><%= link_to bookmark.name, "/channel/#{bookmark.site}/#{bookmark.account_id}/#{bookmark.name}",:controller => 'channel', :action => "#{bookmark.site}" %></td>
+						<td class="viewers"><%= channel['count'] %></td>
+						<td class="site">
+							<a href="http://live.fc2.com/<%= bookmark.account_id %>" target="_blank">
+								<button class="fc2Button" type="submit"><%= bookmark.site %></button>
+							</a>
+						</td>
+						<td class="date">
+							<%= render "time", val: channel['start'] %>
+						</td>
+						<td class="topic"><%= channel['title'] %></td>
+						<td class="edit"><%= link_to '削除', bookmark_path(bookmark.id), class: 'btn btn-danger', method: :delete %></td>
+						<% flag = 1 %>
+					</tr>
+
+				<% end %>
+			<% end %>
+
+			<% if flag == 0 %>
+				<tr class="offline">
+					<td class="name"><%= link_to bookmark.name, "/channel/#{bookmark.site}/#{bookmark.account_id}/#{bookmark.name}",:controller => 'channel', :action => "#{bookmark.site}" %></td>
+					<td class="viewers"></td>
+					<td class="site">
+						<a href="http://live.fc2.com/<%= bookmark.account_id %>" target="_blank">
+							<button class="fc2Button" type="submit"><%= bookmark.site %></button>
+						</a>
+					</td>
+					<td class="date"></td>
+					<td class="topic"></td>
+					<td class="edit"><%= link_to '削除', bookmark_path(bookmark.id), class: 'btn btn-danger', method: :delete %></td>
+				</tr>
+			<% end %>
+
+
+		<% elsif bookmark.site == "nicolive" %>
+		<% if bookmark.account_id.match(/co\d+/) %>
+			<% nicoliveUrl = "http://com.nicovideo.jp/community/#{bookmark.account_id}" %>
+			<% begin %>
+				<% html = open(nicoliveUrl) do |f| %>
+			  		<% f.read %>
+				<% end %>
+			<% rescue OpenURI::HTTPError => error %>
+				<tr class="error">
+					<td class="name"><%= bookmark.name %></td>
+					<td class="date"></td>
+					<td class="site">
+						<button class="nicoliveButton" type="submit"><%= bookmark.site %></button>
+					</td>
+					<td class="date"></td>
+					<td class="topic">エラーが発生しました<%= error %></td>
+					<td class="edit"><%= link_to '削除', bookmark_path(bookmark.id), class: 'btn btn-danger', method: :delete %></td>
+				</tr>
+			<% else %>
+
+				<% doc = Nokogiri::HTML.parse(html) %>
+				<% doc.css('img').each do |anchor| %>
+					<% if anchor[:alt] == "生放送を視聴する！" %>
+						<% flag = 1 %>
+					<% end %>
+				<% end %>
+				<% if flag == 1 %>
+					<% nicoliveUrl = "http://live.nicovideo.jp/watch/#{bookmark.account_id}?ref=community" %>
+					<% html = open(nicoliveUrl) do |f| %>
+				 		<% f.read %>
+					<% end %>
+					<% docStart = Nokogiri::HTML.parse(html) %>
+					<% startTime = docStart.title.match(/\s-\s(.+)開始/) %>
+
+					<tr class="online">
+						<td class="name"><a target="_blank" href="http://live.nicovideo.jp/watch/<%= bookmark.account_id %>?ref=community"><%= bookmark.name %></a></td>
+						<td class="viewers"> ? </td>
+						<td class="site">
+							<a href="http://com.nicovideo.jp/community/<%= bookmark.account_id %>" target="_blank">
+								<button class="nicoliveButton" type="submit"><%= bookmark.site %></button>
+							</a>
+						</td>
+						<td class="date"><%= render "time", val: $+ %></td>
+						<td class="topic"><%= $` %></td>
+						<td class="edit"><%= link_to '削除', bookmark_path(bookmark.id), class: 'btn btn-danger', method: :delete %></td>
+					</tr>
+				<% else %>
+					<tr class="offline">
+						<td class="name"><a target="_blank" href="http://live.nicovideo.jp/watch/<%= bookmark.account_id %>?ref=community"><%= bookmark.name %></a></td>
+						<td class="date"></td>
+						<td class="site">
+							<a href="http://com.nicovideo.jp/community/<%= bookmark.account_id %>" target="_blank">
+								<button class="nicoliveButton" type="submit"><%= bookmark.site %></button>
+							</a>
+						</td>
+						<td class="date"></td>
+						<td class="topic"></td>
+						<td class="edit"><%= link_to '削除', bookmark_path(bookmark.id), class: 'btn btn-danger', method: :delete %></td>
+					</tr>
+				<% end %>
+			<% end %>
+		<% else %>
+			<tr class="offline">
+					<td class="name"><a target="_blank" href="http://live.nicovideo.jp/watch/<%= bookmark.account_id %>?ref=community"><%= bookmark.name %></a></td>
+					<td class="date"></td>
+					<td class="site">
+						<button class="nicoliveButton" type="submit"><%= bookmark.site %></button>
+					</td>
+					<td class="date"></td>
+					<td class="topic"></td>
+					<td class="edit"><%= link_to '削除', bookmark_path(bookmark.id), class: 'btn btn-danger', method: :delete %></td>
+				</tr>
+		<% end %>
+		<% end %>
+		<% flag = 0 %>
+	<% end %>
+</tbody>
+
+<% else %>
+
+<table border="3" width="100%" cellspacing="0" cellpadding="5" bordercolor="#333333" id="booklist">
+	<thead>
+	<tr>
+		<th><center>配信者名</center></th>
+		<th><center>視聴者数</center></th>
+		<th><center>配信サイト</center></th>
+		<th><center>開始時間</center></th>
+		<th><center>トピック</center></th>
+	</tr>
+</thead>
+
+<tbody>
+	<% @bookmarkAll.order("RANDOM()").each do |bookmark| %>
+
+		<% if bookmark.site == "fc2" %>
+			<% channel.each do |channel| %>
+				<% if channel['id'] == bookmark.account_id %>
+					<tr class="online" id="<%= bookmark.account_id %>">
+						<td class="name"><%= link_to bookmark.name, "/channel/#{bookmark.site}/#{bookmark.account_id}/#{bookmark.name}",:controller => 'channel', :action => "#{bookmark.site}" %></td>
+						<td class="viewers"><%= channel['count'] %></td>
+						<td class="site">
+							<button class="fc2Button" type="submit"><%= bookmark.site %></button>
+						</td>
+						<td class="date"><%= render "time", val: channel['start'] %></td>
+						<td class="topic"><%= channel['title'] %></td>
+						<% bookmarkFlag += 1 %>
+					</tr>
+
+				<% end %>
+			<% end %>
+		<% elsif bookmark.site == "nicolive" %>
+			<% nicoliveUrl = "http://com.nicovideo.jp/community/#{bookmark.account_id}" %>
+			<% begin %>
+				<% html = open(nicoliveUrl) do |f| %>
+			  		<% f.read %>
+				<% end %>
+			<% rescue OpenURI::HTTPError => error %>
+
+			<% else %>
+
+				<% doc = Nokogiri::HTML.parse(html) %>
+				<% doc.css('img').each do |anchor| %>
+					<% if anchor[:alt] == "生放送を視聴する！" %>
+						<% flag = 1 %>
+					<% end %>
+				<% end %>
+				<% if flag == 1 %>
+					<% nicoliveUrl = "http://live.nicovideo.jp/watch/#{bookmark.account_id}?ref=community" %>
+					<% html = open(nicoliveUrl) do |f| %>
+				 		<% f.read %>
+					<% end %>
+					<% docStart = Nokogiri::HTML.parse(html) %>
+					<% startTime = docStart.title.match(/\s-\s(.+)開始/) %>
+
+					<tr class="online">
+						<td class="name"><a target="_blank" href="http://live.nicovideo.jp/watch/<%= bookmark.account_id %>?ref=community"><%= bookmark.name %></a></td>
+						<td class="viewers"> ? </td>
+						<td class="site">
+							<a href="http://com.nicovideo.jp/community/<%= bookmark.account_id %>" target="_blank">
+								<button class="nicoliveButton" type="submit"><%= bookmark.site %></button>
+							</a>
+						</td>
+						<td class="date"><%= render "time", val: $+ %></td>
+						<td class="topic"><%= $` %></td>
+					</tr>
+					<% bookmarkFlag += 1 %>
+				<% end %>
+				
+			<% end %>
+		<% end %>
+
+		<% if bookmarkFlag == 10 %>
+			<% break %>
+		<% end %>
+	
+	<% end %>
+</tbody>
+<% end %>
+
+</table>
+	

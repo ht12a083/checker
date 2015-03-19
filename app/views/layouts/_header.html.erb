@@ -1,0 +1,57 @@
+<header class="navbar navbar-default" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<%= link_to 'Checker', root_path, class: 'navbar-brand' %>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<% if logged_in? %>
+					<li>
+						<%= link_to "配信登録", "#", "data-toggle" => "modal", 'data-target' => '#createTicket' %>
+					</li>
+					<li><%= link_to 'ログアウト', logout_path %></li>
+
+					<div class="modal fade" id="createTicket" tabindex="-1" role="dialog" aria-labelledby="dialogHeader" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="dialogHeader">配信登録</h4>
+								</div>
+								<%= form_for(@bookmarkForm, class: 'form-horizontal', role: 'form') do |f| %>
+									<% if @bookmarkForm.errors.any? %>
+										<div class="alert alert-danger">
+											<ul>
+												<% @bookmarkForm.bookmarks.full_messages.each do |msg| %>
+													<li><%= msg %></li>
+												<% end %>
+											</ul>
+										</div>
+									<% end %>
+
+									<div class="modal-body">
+										<h5><%= f.label :name %></h5>
+										<%= f.text_field :name, class: 'form-control' %>
+									
+										<h5><%= f.label :account_id %></h5>					
+										<%= f.text_field :account_id, class: 'form-control' %>
+
+										<h5><%= f.label :site %></h5>
+										<label><%= f.radio_button :site, "fc2" %>fc2</label>
+				  						<label><%= f.radio_button :site, "nicolive" %>ニコ生</label>
+									</div>
+									<div class="modal-footer">
+										<%= f.submit '登録', class: 'btn btn-default', data: {disable_with: '作成中…'} %>
+									</div>
+								<% end %>
+							</div>
+						</div>
+					</div>
+				<% else %>
+					<li><%= link_to 'Twitterでログイン', '/auth/twitter' %></li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+	
+</header>

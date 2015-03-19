@@ -1,0 +1,67 @@
+// Place all the styles related to the welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* table */
+.online {
+	background-color: #ccffff;
+}
+.offline {
+	text-align: center;
+}
+.error {
+	background-color: #ffa280;
+}
+
+/* 配信者情報 */
+.name {
+	text-align: left;
+	font-size: x-large;
+	width: 17%;
+}
+.viewers {
+	text-align: right;
+	font-size: x-large;
+	width: 8%;
+}
+.site {
+	text-align: center;
+	width: 8%;
+}
+.date {
+	text-align: center;
+	width: 10%;
+}
+.time {
+	text-align: center;
+	font-size: large;
+}
+.start {
+	text-align: center;
+}
+.topic {
+	width: 40%;
+}
+.edit {
+	width: 5%;
+	text-align: center;
+}
+
+.fc2Button {
+	background-color: #a9a9a9;
+	color: #fff;
+	width: 60px;
+
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.nicoliveButton {
+	background-color: #000000;
+	color: #fff;
+	width: 60px;
+
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
