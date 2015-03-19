@@ -21,18 +21,6 @@
 $(function() {
  	$('iframe').show();
 
-   	$('.online').click(function() {
-//   		if($('#iframe1').attr('src') == ''){
-		var id = $(this).attr('id');
-		$('#iframe1').show();
-		$('#iframe1').attr('src', 'http://live.fc2.com/embedPlayer/?id=' + id + '&lang=ja&suggest=1&thumbnail=1&adultaccess=0&afid=41561948');
-	//	} else {
-	//	var id = $(this).attr('id');
-	//	$('#iframe2').show();
-	//	$('#iframe2').attr('src', 'http://live.fc2.com/embedPlayer/?id=' + id + '&lang=ja&suggest=1&thumbnail=1&adultaccess=0&afid=41561948');
-	//	}
-	});
-
 	$('[name=size]').change(function() {
     // 選択されているvalue属性値を取り出す
     var val = $('[name=size]').val();

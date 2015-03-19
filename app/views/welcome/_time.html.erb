@@ -1,3 +1,5 @@
+<%# 経過時間の計算 %>
+
 <span class="time">
 	<% difference = Date.today - Date.new(val[0,4].to_i,val[5,2].to_i,val[8,2].to_i) %>
 	<% if @now.strftime('%M').to_i > val[14,2].to_i %>
@@ -13,8 +15,8 @@
 		<% unless difference.to_i == 0 %>
 			<%= (@now.strftime('%H').to_i + 24 * difference.to_i - 1) - val[11,2].to_i %>時間
 		<% else %>
-			<% if @now.strftime('%H').to_i - 1 > val[11,2].to_i %>
-				<%= @now.strftime('%H').to_i - val[11,2].to_i %>時間
+			<% if @now.strftime('%H').to_i > val[11,2].to_i %>
+				<%= @now.strftime('%H').to_i - val[11,2].to_i - 1 %>時間
 			<% end %>
 		<% end %>
 		<%= @now.strftime('%M').to_i - val[14,2].to_i + 60 %>分

@@ -161,10 +161,14 @@
 			<% channel.each do |channel| %>
 				<% if channel['id'] == bookmark.account_id %>
 					<tr class="online" id="<%= bookmark.account_id %>">
-						<td class="name"><%= link_to bookmark.name, "/channel/#{bookmark.site}/#{bookmark.account_id}/#{bookmark.name}",:controller => 'channel', :action => "#{bookmark.site}" %></td>
+						<td class="name">
+							<a href="http://live.fc2.com/<%= bookmark.account_id %>" target="_blank"><%= bookmark.name %></a>
+						</td>
 						<td class="viewers"><%= channel['count'] %></td>
 						<td class="site">
-							<button class="fc2Button" type="submit"><%= bookmark.site %></button>
+							<a href="http://live.fc2.com/<%= bookmark.account_id %>" target="_blank">
+								<button class="fc2Button" type="submit"><%= bookmark.site %></button>
+							</a>
 						</td>
 						<td class="date"><%= render "time", val: channel['start'] %></td>
 						<td class="topic"><%= channel['title'] %></td>
@@ -209,12 +213,13 @@
 						<td class="topic"><%= $` %></td>
 					</tr>
 					<% bookmarkFlag += 1 %>
+					<% flag = 0 %>
 				<% end %>
 				
 			<% end %>
 		<% end %>
 
-		<% if bookmarkFlag == 10 %>
+		<% if bookmarkFlag == 2 %>
 			<% break %>
 		<% end %>
 	

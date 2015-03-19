@@ -7,4 +7,8 @@ class WelcomeController < ApplicationController
   	end
   	@bookmarkAll = Bookmark.all
   end
+
+  def help
+  	@bookmarkForm = current_user.created_bookmarks.build
+  end
 end

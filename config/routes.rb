@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root to: 'welcome#index'
   get '/auth/:provider/callback' => 'sessions#create'
   get '/logout' => 'sessions#destroy', as: :logout
+  get '/help' => 'welcome#help', as: :help
   match '/channel/:site/:id/:name', to: 'channel#fc2', via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
