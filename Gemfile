@@ -61,5 +61,6 @@ group :development, :test do
   gem 'spring'
 
   gem 'sqlite3'
-end
+end	
 
+gem 'heroku_secrets', github: 'alexpeattie/heroku_secrets'

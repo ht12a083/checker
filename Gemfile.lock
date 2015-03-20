@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/alexpeattie/heroku_secrets.git
+  revision: 717af8e0acf399bc88d2c8c1a7e230023942af0f
+  specs:
+    heroku_secrets (0.0.2)
+
+GIT
   remote: git://github.com/reactjs/react-rails.git
   revision: 99a1b38b28dbade8bac7b58bca0454d7348235de
   specs:
@@ -202,6 +208,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   execjs
+  heroku_secrets!
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
