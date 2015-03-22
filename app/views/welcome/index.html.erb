@@ -159,6 +159,7 @@
 </thead>
 
 <tbody>
+	<% unless @bookmarkAll.empty? %>
 	<% @bookmarkAll.group(:account_id).uniq.order("RANDOM()").each do |bookmark| %>
 
 		<% if bookmark.site == "fc2" %>
@@ -227,6 +228,7 @@
 			<% break %>
 		<% end %>
 	
+	<% end %>
 	<% end %>
 </tbody>
 <% end %>
