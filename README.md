@@ -4,7 +4,7 @@ Web 配信をまとめるアプリケーション
 ユーザごとに配信情報をまとめるアプリケーションです。
 
 以下の url より実際の動作を確認することができます。  
-<https://sleepy-taiga-4737.herokuapp.com/>
+<http://ec2-54-178-135-170.ap-northeast-1.compute.amazonaws.com/>
 
 レイアウトは以下のサイトを参考に作りました。  
 <http://revinx.net/ustream/>
