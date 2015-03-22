@@ -19,27 +19,6 @@
 //= require_tree .
 
 $(function() {
- 	$('iframe').show();
-
-	$('[name=size]').change(function() {
-    // 選択されているvalue属性値を取り出す
-    var val = $('[name=size]').val();
-    if(val == 50){
-   		$('iframe').attr('width','350');
-   		$('iframe').attr('height','262');
-    }
-    if(val == 70){
-   		$('iframe').attr('width','490');
-   		$('iframe').attr('height','367');
-    }
-    if(val == 100){
-   		$('iframe').attr('width','700');
-   		$('iframe').attr('height','525');
-    }
-
-	});
-
-
   $("#booklist").tablesorter( {
     sortList: [[1,1],[2,1],[3,1]],
     headers: {

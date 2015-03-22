@@ -29,7 +29,9 @@
 			<% channel.each do |channel| %>
 				<% if channel['id'] == bookmark.account_id %>
 					<tr class="online" id="<%= bookmark.account_id %>">
-						<td class="name"><%= link_to bookmark.name, "/channel/#{bookmark.site}/#{bookmark.account_id}/#{bookmark.name}",:controller => 'channel', :action => "#{bookmark.site}" %></td>
+						<td class="name">
+							<a href="http://live.fc2.com/<%= bookmark.account_id %>" target="_blank"><%= bookmark.name %></a>
+						</td>
 						<td class="viewers"><%= channel['count'] %></td>
 						<td class="site">
 							<a href="http://live.fc2.com/<%= bookmark.account_id %>" target="_blank">
@@ -49,7 +51,9 @@
 
 			<% if flag == 0 %>
 				<tr class="offline">
-					<td class="name"><%= link_to bookmark.name, "/channel/#{bookmark.site}/#{bookmark.account_id}/#{bookmark.name}",:controller => 'channel', :action => "#{bookmark.site}" %></td>
+					<td class="name">
+						<a href="http://live.fc2.com/<%= bookmark.account_id %>" target="_blank"><%= bookmark.name %></a>
+					</td>
 					<td class="viewers"></td>
 					<td class="site">
 						<a href="http://live.fc2.com/<%= bookmark.account_id %>" target="_blank">
@@ -155,7 +159,7 @@
 </thead>
 
 <tbody>
-	<% @bookmarkAll.order("RANDOM()").each do |bookmark| %>
+	<% @bookmarkAll.group(:account_id).uniq.order("RANDOM()").each do |bookmark| %>
 
 		<% if bookmark.site == "fc2" %>
 			<% channel.each do |channel| %>
@@ -219,7 +223,7 @@
 			<% end %>
 		<% end %>
 
-		<% if bookmarkFlag == 2 %>
+		<% if bookmarkFlag == 10 %>
 			<% break %>
 		<% end %>
 	
