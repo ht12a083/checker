@@ -22,4 +22,4 @@
 		<%= @now.strftime('%M').to_i - val[14,2].to_i + 60 %>分
 	<% end %>
 </span><br>
-<%= val[6,10] %>~
+<%= val[5,11].sub('-','/') %>~
