@@ -66,9 +66,8 @@
 				</tr>
 			<% end %>
 
-
 		<% elsif bookmark.site == "nicolive" %>
-		<% if bookmark.account_id.match(/co\d+/) %>
+
 			<% nicoliveUrl = "http://com.nicovideo.jp/community/#{bookmark.account_id}" %>
 			<% begin %>
 				<% html = open(nicoliveUrl) do |f| %>
@@ -128,18 +127,7 @@
 					</tr>
 				<% end %>
 			<% end %>
-		<% else %>
-			<tr class="offline">
-					<td class="name"><a target="_blank" href="http://live.nicovideo.jp/watch/<%= bookmark.account_id %>?ref=community"><%= bookmark.name %></a></td>
-					<td class="date"></td>
-					<td class="site">
-						<button class="nicoliveButton" type="submit"><%= bookmark.site %></button>
-					</td>
-					<td class="date"></td>
-					<td class="topic"></td>
-					<td class="edit"><%= link_to '削除', bookmark_path(bookmark.id), class: 'btn btn-danger', method: :delete %></td>
-				</tr>
-		<% end %>
+		
 		<% end %>
 		<% flag = 0 %>
 	<% end %>
